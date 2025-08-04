@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나뭇잎 분류 시스템</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* 메인 스타일링 */
+        .leaf-container {
+            transition: all 0.3s ease;
+        }
+        .result-animation {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-green-700 mb-4">나뭇잎 분류 시스템</h1>
+            <p class="text-gray-600">나뭇잎의 길이와 넓이를 측정하여 잎맥 유형을 분류합니다</p>
+        </header>
+
+        <!-- 입력 폼 섹션 -->
+        <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6 mb-8">
+            <div class="leaf-container">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="length">
+                        나뭇잎 길이 (cm)
+                    </label>
+                    <input type="number" id="length" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="길이 입력">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="width">
+                        나뭇잎 넓이 (cm)
+                    </label>
+                    <input type="number" id="width" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="넓이 입력">
+                </div>
+                <button onclick="classifyLeaf()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                    분류하기
+                </button>
+            </div>
+        </div>
+
+        <!-- 결과 표시 섹션 -->
+        <div id="result" class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6 hidden">
+            <h2 class="text-xl font-bold text-center text-green-700 mb-4">분류 결과</h2>
+            <p id="resultText" class="text-center text-gray-700"></p>
+        </div>
+
+        <!-- 샘플 데이터 섹션 -->
+        <div class="mt-8 max-w-md mx-auto">
+            <h3 class="text-xl font-bold mb-4 text-center">샘플 데이터</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <p>나란히맥 예시:</p>
+                    <p>길이: 15cm, 넓이: 3cm</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <p>그물맥 예시:</p>
+                    <p>길이: 8cm, 넓이: 6cm</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 샘플 데이터셋
+        const sampleData = [
+            { length: 15, width: 3, type: '나란히맥' },
+            { length: 8, width: 6, type: '그물맥' },
+            { length: 12, width: 2, type: '나란히맥' },
+            { length: 7, width: 5, type: '그물맥' }
+        ];
+
+        function classifyLeaf() {
+            const length = parseFloat(document.getElementById('length').value);
+            const width = parseFloat(document.getElementById('width').value);
+
+            if (isNaN(length) || isNaN(width)) {
+                alert('올바른 값을 입력해주세요');
+                return;
+            }
+
+            // 간단한 분류 로직
+            const ratio = length / width;
+            const result = ratio > 3 ? '나란히맥' : '그물맥';
+
+            // 결과 표시
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+            resultDiv.classList.remove('hidden');
+            resultText.textContent = `입력하신 나뭇잎은 ${result} 유형입니다.`;
+            
+            // 결과 애니메이션
+            resultDiv.classList.add('result-animation');
+        }
+    </script>
+</body>
+</html>
